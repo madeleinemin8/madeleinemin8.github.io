@@ -1,87 +1,92 @@
-<html lang="en">
+<!DOCTYPE html>
+<html>
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <title>Eyes-Free Emoji Messaging by the Norman Doors</title>
-    <script>
-      window.addEventListener('error', function(error) {
-        if (ChromeSamples && ChromeSamples.setStatus) {
-          console.error(error);
-          ChromeSamples.setStatus(error.message + ' (Your browser may not support this feature.)');
-          error.preventDefault();
-        }
-      });
-    </script>
-    <link rel="stylesheet" href="main.css">
+
+    <!-- main a-frame library -->
+    <script src="https://aframe.io/releases/1.0.3/aframe.min.js"></script>
+
+    <!-- physics library -->
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-physics-system/v4.0.1/dist/aframe-physics-system.min.js"></script>
+
+    <!-- particle system library -->
+    <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
+
+    <!-- environment library -->
+    <script src="https://unpkg.com/aframe-environment-component@1.1.0/dist/aframe-environment-component.min.js"></script>
+
+    <!-- text geometry library -->
+    <script src="https://unpkg.com/aframe-text-geometry-component@0.5.1/dist/aframe-text-geometry-component.min.js"></script>
+
+    <!-- extras library -->
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.0/dist/aframe-extras.min.js"></script>
+
+    <!-- teleport library -->
+    <script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
   </head>
+  <body>
+    <a-scene physics>
+        <a-assets>
+          <img id="background" src="images/background.jpeg">
+          <img id="illusion" src="images/illusion.jpeg">
 
-  <body> 
+          <a-asset-item id="fish-obj" src="models/fish.obj"></a-asset-item>
+          <a-asset-item id="fish-mtl" src="models/fish.mtl"></a-asset-item>
 
-    <h1>Eyes-Free Emoji Messaging</h1>
+          <a-asset-item id="smoltree-obj" src="models/smol-tree.obj"></a-asset-item>
+          <a-asset-item id="smoltree-mtl" src="models/smol-tree.mtl"></a-asset-item>
 
-    <!------------------------------- RECEIVING W TIME --------------------------------->
-    <h2>Receiving Messages: Time</h2>
+          <a-asset-item id="tree-obj" src="models/tree.obj"></a-asset-item>
+          <a-asset-item id="tree-mtl" src="models/tree.mtl"></a-asset-item>
 
-    <script>
-        function receiveThumbsUp() {
-            navigator.vibrate(200);     // short
-        }
-        function receiveThumbsDown() {
-            navigator.vibrate(600);     // long
-        } 
-        function receiveHeart() {
-            navigator.vibrate([200, 50, 600, 50, 200, 50, 600, 50, 200, 20, 600]); // short-long 3 times
-        }
-        function receiveSmiley() {
-            navigator.vibrate([200, 100, 200])       // short-short
-        }
-        function receiveSad() {
-            navigator.vibrate([600, 100, 600])       // long-long
-        }
-        function receiveScream() {
-            navigator.vibrate(2000);    // continuous, long
-        }
-    </script>
+          <a-asset-item id="frog-obj" src="models/frog.obj"></a-asset-item>
+          <a-asset-item id="frog-mtl" src="models/frog.mtl"></a-asset-item>
+        </a-assets>
 
-    <h3>Thumbs Up</h3>
-    <div><button onclick="receiveThumbsUp()">Receive</button></div>
+        <a-entity id="cameraRig" wasd-controls movement-controls>
+          <a-entity camera look-controls position="0 1.7 0"></a-entity>
+          <a-entity id="head" camera="active: true" look-controls wasd-controls position="0 1.6 0"></a-entity>
+          <a-entity oculus-touch-controls="hand: left" teleport-controls="button: trigger; cameraRig: #cameraRig; teleportOrigin: #head;"></a-entity>
+          <a-entity oculus-touch-controls="hand: right" teleport-controls="button: trigger; cameraRig: #cameraRig; teleportOrigin: #head;"></a-entity>
+          <a-entity vive-controls="hand: left" teleport-controls="button: trigger; cameraRig: #cameraRig; teleportOrigin: #head;"></a-entity>
+          <a-entity vive-controls="hand: right" teleport-controls="button: trigger; cameraRig: #cameraRig; teleportOrigin: #head;"></a-entity>
+        </a-entity>
 
-    <h3>Thumbs Down</h3>
-    <div><button onclick="receiveThumbsDown()">Receive</button></div>
+        <a-entity environment="preset: goaland"></a-entity>
 
-    <h3>Heart</h3>
-    <div><button onclick="receiveHeart()">Receive</button></div>
+        <a-entity geometry = "primitive: sphere" radius = "1" position = "-0.63 1.4 -3.9" material = "src: #illusion"
+        animation="property: rotation; to: 0 360 0; dur: 15000; easing: linear; loop: true;">
+        </a-entity>
 
-    <h3>Smiley</h3>
-    <div><button onclick="receiveSmiley()">Receive</button></div>
+        <a-entity geometry = "primitive: plane" position = "0, .5, -5" scale = "15 15 2" material = "src: #background" rotation = "-90 0 0">
+        </a-entity>
 
-    <h3>Sad</h3>
-    <div><button onclick="receiveSad()">Receive</button></div>
-    
-    <h3>Scream Face</h3>
-    <div><button onclick="receiveScream()">Receive</button></div>
+        <a-entity obj-model="obj: #fish-obj; mtl: #fish-mtl" position="-4 3 3" rotation="-90 180 0" scale=".5 .5 .5"
+        animation="property: position; to: -3 -1 -9; dur: 15000; easing: linear; loop: true;"></a-entity>
 
-    <!------------------------------- RECEIVING W FREQUENCY --------------------------------->
-    <h2>Receiving Messages: Frequency</h2>
+        <a-entity obj-model="obj: #fish-obj; mtl: #fish-mtl" position="0 4 10" rotation="-90 180 0" scale=".5 .5 .5"
+        animation="property: position; to: 4 4 4; dur: 15000; easing: linear; loop: true;"></a-entity>
 
-    <!------------------------------- SENDING W SHAKE/MOVE --------------------------------->
-    <h2>Sending Messages: Shake/Move</h2>
-    
-    <!------------------------------- SENDING W SHAKE/MOVE --------------------------------->
-    <h2>Sending Messages: Touch/Draw</h2>
+        <a-entity obj-model="obj: #fish-obj; mtl: #fish-mtl" position="-3 1 9" rotation="-90 180 0" scale=".5 .5 .5"
+        animation="property: position; to: 6 0 -10; dur: 15000; easing: linear; loop: true;"></a-entity>
 
+        <a-entity obj-model="obj: #smoltree-obj; mtl: #smoltree-mtl" position="0 0 3" rotation="0 0 0" scale="1 1 1"
+        animation="property: rotation; to: 0 360 0; dur: 15000; easing: linear; loop: true;"></a-entity>
 
-    <script>
-      /* jshint ignore:start */
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-      ga('create', 'UA-53563471-1', 'auto');
-      ga('send', 'pageview');
-      /* jshint ignore:end */
-    </script>
+        <a-entity obj-model="obj: #tree-obj; mtl: #tree-mtl" position="3 5 -3" rotation="0 0 0" scale="1 1 1"
+        animation="property: rotation; to: 0 360 0; dur: 15000; easing: linear; loop: true;"></a-entity>
+
+        <a-entity obj-model="obj: #tree-obj; mtl: #tree-mtl" position="-7 5 3" rotation="0 0 0" scale="1 1 1"
+        animation="property: rotation; to: 0 360 0; dur: 15000; easing: linear; loop: true;"></a-entity>
+
+        <a-entity obj-model="obj: #tree-obj; mtl: #tree-mtl" position="4 -1 -3" rotation="0 0 0" scale="2 2 2"
+        animation="property: rotation; to: 0 360 0; dur: 15000; easing: linear; loop: true;"></a-entity>
+
+        <a-entity obj-model="obj: #tree-obj; mtl: #tree-mtl" position="-3 -1 -9" rotation="0 0 0" scale="1 1 1"
+        animation="property: rotation; to: 0 360 0; dur: 15000; easing: linear; loop: true;"></a-entity>
+
+        <a-entity obj-model="obj: #frog-obj; mtl: #frog-mtl" position="-25 4.7 -1" rotation="-50 90 0" scale="4 4 4"></a-entity>
+
+    </a-scene>
   </body>
 </html>
