@@ -78,11 +78,11 @@ function eat() {
 }
 
 function updateHealth () {
-  //healthCount++;
   flyCount++;
   if (flyCount > 13) {
     // take to trip page
+    window.open("https://madeleinemin8.github.io/vr.html");
+    flyCount = 0;
   }
-  //print("Health: " + healthCount);
   print("Flies: " + flyCount);
 }
